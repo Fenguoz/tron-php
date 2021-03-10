@@ -1,0 +1,34 @@
+{
+    "name": "fenguoz/tron-php",
+    "description": "TRX TRX20",
+    "keywords": [
+        "php",
+        "tron",
+        "trx",
+        "trx20"
+    ],
+    "type": "library",
+    "homepage": "https://github.com/Fenguoz/tron-php",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Fenguoz",
+            "email": "243944672@qq.com"
+        }
+    ],
+    "require": {
+        "guzzlehttp/guzzle": "^6.3",
+        "ionux/phactor": "1.0.8",
+        "kornrunner/keccak": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Tron\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Test\\": "tests/"
+        }
+    }
+}
