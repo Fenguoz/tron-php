@@ -17,6 +17,7 @@
         }
     ],
     "require": {
+        "iexbase/tron-api": "^2.0",
         "guzzlehttp/guzzle": "^6.3",
         "ionux/phactor": "1.0.8",
         "kornrunner/keccak": "^1.0"
