@@ -1,11 +1,11 @@
 {
     "name": "fenguoz/tron-php",
-    "description": "TRX TRX20",
+    "description": "TRX TRC20",
     "keywords": [
         "php",
         "tron",
         "trx",
-        "trx20"
+        "trc20"
     ],
     "type": "library",
     "homepage": "https://github.com/Fenguoz/tron-php",

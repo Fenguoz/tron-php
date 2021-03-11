@@ -18,5 +18,7 @@ interface WalletInterface
 
     public function blockNumber(): Block;
 
+    public function blockByNumber(int $blockID): Block;
+
     public function transactionReceipt(string $txHash);
 }

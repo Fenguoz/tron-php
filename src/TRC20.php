@@ -7,7 +7,7 @@ use Tron\Exceptions\TransactionException;
 use Tron\Support\Formatter;
 use Tron\Support\Utils;
 
-class TRX20 extends TRX
+class TRC20 extends TRX
 {
     protected $contractAddress;
 

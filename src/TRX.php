@@ -10,9 +10,9 @@ use IEXBase\TronAPI\Provider\HttpProvider;
 use Tron\Interfaces\WalletInterface;
 use Tron\Exceptions\TronErrorException;
 use Tron\Exceptions\TransactionException;
-use Tron\Support\Base58;
-use Tron\Support\Crypto;
-use Tron\Support\Hash;
+use IEXBase\TronAPI\Support\Base58;
+use IEXBase\TronAPI\Support\Crypto;
+use IEXBase\TronAPI\Support\Hash;
 
 class TRX implements WalletInterface
 {
@@ -140,6 +140,16 @@ class TRX implements WalletInterface
             throw new TransactionException($e->getMessage(), $e->getCode());
         }
         return new Block($block['blockID'], $block['block_header']);
+    }
+
+    public function blockByNumber(int $blockID): Block
+    {
+        try {
+            $block = $this->tron->getBlockByNumber($blockID);
+        } catch (TronException $e) {
+            throw new TransactionException($e->getMessage(), $e->getCode());
+        }
+        return new Block($block['blockID'], $block['block_header'], $block['transactions']);
     }
 
     public function transactionReceipt(string $txHash): Transaction

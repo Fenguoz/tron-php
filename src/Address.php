@@ -2,8 +2,8 @@
 
 namespace Tron;
 
-use Tron\Support\Base58Check;
-use Tron\Support\Hash;
+use IEXBase\TronAPI\Support\Base58Check;
+use IEXBase\TronAPI\Support\Hash;
 
 class Address
 {
