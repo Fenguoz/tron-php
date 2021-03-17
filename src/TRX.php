@@ -16,13 +16,14 @@ use IEXBase\TronAPI\Support\Hash;
 
 class TRX implements WalletInterface
 {
-    public function __construct(Api $_api, $config)
+    public function __construct(Api $_api, array $config = [])
     {
         $this->_api = $_api;
 
-        $fullNode = new HttpProvider($config['rpc_url']);
-        $solidityNode = new HttpProvider($config['rpc_url']);
-        $eventServer = new HttpProvider($config['rpc_url']);
+        $host = $_api->getClient()->getConfig('base_uri')->getHost();
+        $fullNode = new HttpProvider($$host);
+        $solidityNode = new HttpProvider($host);
+        $eventServer = new HttpProvider($host);
         try {
             $this->tron = new Tron($fullNode, $solidityNode, $eventServer);
         } catch (TronException $e) {
@@ -128,7 +129,7 @@ class TRX implements WalletInterface
                 'PACKING'
             );
         } else {
-            throw new TransactionException('transfer fail');
+            throw new TransactionException(hex2bin($response['message']));
         }
     }
 

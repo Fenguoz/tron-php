@@ -11,7 +11,7 @@ class TRC20 extends TRX
 {
     protected $contractAddress;
 
-    public function __construct(Api $_api, $config)
+    public function __construct(Api $_api, array $config)
     {
         parent::__construct($_api, $config);
 
@@ -32,6 +32,10 @@ class TRC20 extends TRX
             'parameter' => $format,
             'owner_address' => $address->hexAddress,
         ]);
+
+        if (isset($body->result->code)) {
+            throw new TronException(hex2bin($body->result->message));
+        }
         return Utils::toDisplayAmount($body->constant_result[0], $this->decimals);
     }
 

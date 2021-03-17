@@ -1,6 +1,6 @@
 {
     "name": "fenguoz/tron-php",
-    "description": "TRX TRC20",
+    "description": "Support TRON's TRX and TRC20, which include functions such as address creation, balance query, transaction transfer, query the latest blockchain, query information based on the blockchain, and query information based on the transaction hash",
     "keywords": [
         "php",
         "tron",
