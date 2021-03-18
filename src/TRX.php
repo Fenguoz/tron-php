@@ -2,7 +2,6 @@
 
 namespace Tron;
 
-use kornrunner\Keccak;
 use Phactor\Key;
 use IEXBase\TronAPI\Exception\TronException;
 use IEXBase\TronAPI\Tron;
@@ -10,9 +9,7 @@ use IEXBase\TronAPI\Provider\HttpProvider;
 use Tron\Interfaces\WalletInterface;
 use Tron\Exceptions\TronErrorException;
 use Tron\Exceptions\TransactionException;
-use IEXBase\TronAPI\Support\Base58;
-use IEXBase\TronAPI\Support\Crypto;
-use IEXBase\TronAPI\Support\Hash;
+use Tron\Support\Key as SupportKey;
 
 class TRX implements WalletInterface
 {
@@ -20,8 +17,8 @@ class TRX implements WalletInterface
     {
         $this->_api = $_api;
 
-        $host = $_api->getClient()->getConfig('base_uri')->getHost();
-        $fullNode = new HttpProvider($$host);
+        $host = $_api->getClient()->getConfig('base_uri')->getScheme() . '://' . $_api->getClient()->getConfig('base_uri')->getHost();
+        $fullNode = new HttpProvider($host);
         $solidityNode = new HttpProvider($host);
         $eventServer = new HttpProvider($host);
         try {
@@ -29,34 +26,6 @@ class TRX implements WalletInterface
         } catch (TronException $e) {
             throw new TronErrorException($e->getMessage(), $e->getCode());
         }
-    }
-
-    public function genKeyPair(): array
-    {
-        $key = new Key();
-
-        return $key->GenerateKeypair();
-    }
-
-    public function getAddressHex(string $pubKeyBin): string
-    {
-        if (strlen($pubKeyBin) == 65) {
-            $pubKeyBin = substr($pubKeyBin, 1);
-        }
-
-        $hash = Keccak::hash($pubKeyBin, 256);
-
-        return Address::ADDRESS_PREFIX . substr($hash, 24);
-    }
-
-    public function getBase58CheckAddress(string $addressBin): string
-    {
-        $hash0 = Hash::SHA256($addressBin);
-        $hash1 = Hash::SHA256($hash0);
-        $checksum = substr($hash1, 0, 4);
-        $checksum = $addressBin . $checksum;
-
-        return Base58::encode(Crypto::bin2bc($checksum));
     }
 
     public function generateAddress(): Address
@@ -69,7 +38,8 @@ class TRX implements WalletInterface
                 throw new TronErrorException('Could not generate valid key');
             }
 
-            $keyPair = $this->genKeyPair();
+            $key = new Key();
+            $keyPair = $key->GenerateKeypair();
             $privateKeyHex = $keyPair['private_key_hex'];
             $pubKeyHex = $keyPair['public_key'];
 
@@ -78,11 +48,8 @@ class TRX implements WalletInterface
                 continue;
             }
 
-            $pubKeyBin = hex2bin($pubKeyHex);
-            $addressHex = $this->getAddressHex($pubKeyBin);
-            $addressBin = hex2bin($addressHex);
-            $addressBase58 = $this->getBase58CheckAddress($addressBin);
-
+            $addressHex = Address::ADDRESS_PREFIX . SupportKey::publicKeyToAddress($pubKeyHex);
+            $addressBase58 = SupportKey::getBase58CheckAddress($addressHex);
             $address = new Address($addressBase58, $privateKeyHex, $addressHex);
             $validAddress = $this->validateAddress($address);
         } while (!$validAddress);
@@ -101,6 +68,19 @@ class TRX implements WalletInterface
         ]);
 
         return $body->result;
+    }
+
+    public function privateKeyToAddress(string $privateKeyHex): Address
+    {
+        $addressHex = Address::ADDRESS_PREFIX . SupportKey::privateKeyToAddress($privateKeyHex);
+        $addressBase58 = SupportKey::getBase58CheckAddress($addressHex);
+        $address = new Address($addressBase58, $privateKeyHex, $addressHex);
+        $validAddress = $this->validateAddress($address);
+        if (!$validAddress) {
+            throw new TronErrorException('Invalid private key');
+        }
+
+        return $address;
     }
 
     public function balance(Address $address)

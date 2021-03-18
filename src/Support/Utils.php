@@ -11,50 +11,12 @@ use Psr\Http\Message\StreamInterface;
 
 class Utils
 {
-    const NONE = '0x0';
-
     /**
      * SHA3_NULL_HASH
      *
      * @const string
      */
     const SHA3_NULL_HASH = 'c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470';
-
-    /**
-     * UNITS
-     * from ethjs-unit
-     *
-     * @const array
-     */
-    const UNITS = [
-        'noether' => '0',
-        'wei' => '1',
-        'kwei' => '1000',
-        'Kwei' => '1000',
-        'babbage' => '1000',
-        'femtoether' => '1000',
-        'mwei' => '1000000',
-        'Mwei' => '1000000',
-        'lovelace' => '1000000',
-        'picoether' => '1000000',
-        'gwei' => '1000000000',
-        'Gwei' => '1000000000',
-        'shannon' => '1000000000',
-        'nanoether' => '1000000000',
-        'nano' => '1000000000',
-        'szabo' => '1000000000000',
-        'microether' => '1000000000000',
-        'micro' => '1000000000000',
-        'finney' => '1000000000000000',
-        'milliether' => '1000000000000000',
-        'milli' => '1000000000000000',
-        'ether' => '1000000000000000000',
-        'kether' => '1000000000000000000000',
-        'grand' => '1000000000000000000000',
-        'mether' => '1000000000000000000000000',
-        'gether' => '1000000000000000000000000000',
-        'tether' => '1000000000000000000000000000000'
-    ];
 
     /**
      * NEGATIVE1
@@ -237,121 +199,7 @@ class Utils
         if ($hash === self::SHA3_NULL_HASH) {
             return null;
         }
-        return '0x' . $hash;
-    }
-
-    /**
-     * toWei
-     * Change number from unit to wei.
-     * For example:
-     * $wei = Utils::toWei('1', 'kwei');
-     * $wei->toString(); // 1000
-     *
-     * @param BigInteger|string $number
-     * @param string $unit
-     * @return BigInteger
-     */
-    public static function toWei($number, $unit)
-    {
-        if (!is_string($number) && !($number instanceof BigInteger)) {
-            throw new InvalidArgumentException('toWei number must be string or BigInteger.');
-        }
-        $bn = self::toBn($number);
-
-        if (!is_string($unit)) {
-            throw new InvalidArgumentException('toWei unit must be string.');
-        }
-        if (!isset(self::UNITS[$unit])) {
-            throw new InvalidArgumentException('toWei doesn\'t support ' . $unit . ' unit.');
-        }
-        $bnt = new BigInteger(self::UNITS[$unit]);
-
-        if (is_array($bn)) {
-            // fraction number
-            list($whole, $fraction, $fractionLength, $negative1) = $bn;
-
-            if ($fractionLength > strlen(self::UNITS[$unit])) {
-                throw new InvalidArgumentException('toWei fraction part is out of limit.');
-            }
-            $whole = $whole->multiply($bnt);
-
-            // There is no pow function in phpseclib 2.0, only can see in dev-master
-            // Maybe implement own biginteger in the future
-            // See 2.0 BigInteger: https://github.com/phpseclib/phpseclib/blob/2.0/phpseclib/Math/BigInteger.php
-            // See dev-master BigInteger: https://github.com/phpseclib/phpseclib/blob/master/phpseclib/Math/BigInteger.php#L700
-            // $base = (new BigInteger(10))->pow(new BigInteger($fractionLength));
-
-            // So we switch phpseclib special global param, change in the future
-            switch (MATH_BIGINTEGER_MODE) {
-                case $whole::MODE_GMP:
-                    static $two;
-                    $powerBase = gmp_pow(gmp_init(10), (int) $fractionLength);
-                    break;
-                case $whole::MODE_BCMATH:
-                    $powerBase = bcpow('10', (string) $fractionLength, 0);
-                    break;
-                default:
-                    $powerBase = pow(10, (int) $fractionLength);
-                    break;
-            }
-            $base = new BigInteger($powerBase);
-            $fraction = $fraction->multiply($bnt)->divide($base)[0];
-
-            if ($negative1 !== false) {
-                return $whole->add($fraction)->multiply($negative1);
-            }
-            return $whole->add($fraction);
-        }
-
-        return $bn->multiply($bnt);
-    }
-
-    /**
-     * toEther
-     * Change number from unit to ether.
-     * For example:
-     * list($bnq, $bnr) = Utils::toEther('1', 'kether');
-     * $bnq->toString(); // 1000
-     *
-     * @param BigInteger|string|int $number
-     * @param string $unit
-     * @return array
-     */
-    public static function toEther($number, $unit)
-    {
-        // if ($unit === 'ether') {
-        //     throw new InvalidArgumentException('Please use another unit.');
-        // }
-        $wei = self::toWei($number, $unit);
-        $bnt = new BigInteger(self::UNITS['ether']);
-
-        return $wei->divide($bnt);
-    }
-
-    /**
-     * fromWei
-     * Change number from wei to unit.
-     * For example:
-     * list($bnq, $bnr) = Utils::fromWei('1000', 'kwei');
-     * $bnq->toString(); // 1
-     *
-     * @param BigInteger|string|int $number
-     * @param string $unit
-     * @return BigInteger
-     */
-    public static function fromWei($number, $unit)
-    {
-        $bn = self::toBn($number);
-
-        if (!is_string($unit)) {
-            throw new InvalidArgumentException('fromWei unit must be string.');
-        }
-        if (!isset(self::UNITS[$unit])) {
-            throw new InvalidArgumentException('fromWei doesn\'t support ' . $unit . ' unit.');
-        }
-        $bnt = new BigInteger(self::UNITS[$unit]);
-
-        return $bn->divide($bnt);
+        return $hash;
     }
 
     /**

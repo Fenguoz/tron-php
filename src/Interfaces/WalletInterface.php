@@ -12,6 +12,8 @@ interface WalletInterface
 
     public function validateAddress(Address $address): bool;
 
+    public function privateKeyToAddress(string $privateKeyHex): Address;
+
     public function balance(Address $address);
 
     public function transfer(Address $from, Address $to, float $amount): Transaction;
@@ -20,5 +22,5 @@ interface WalletInterface
 
     public function blockByNumber(int $blockID): Block;
 
-    public function transactionReceipt(string $txHash): Transaction;
+    public function transactionReceipt(string $txHash);
 }
