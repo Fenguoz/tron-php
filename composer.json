@@ -21,6 +21,9 @@
         "ionux/phactor": "1.0.8",
         "kornrunner/keccak": "^1.0"
     },
+    "require-dev": {
+        "phpunit/phpunit": "^5.7 || ^7.5"
+    },
     "autoload": {
         "psr-4": {
             "Tron\\": "src/"
