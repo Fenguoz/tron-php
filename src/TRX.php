@@ -120,7 +120,8 @@ class TRX implements WalletInterface
         } catch (TronException $e) {
             throw new TransactionException($e->getMessage(), $e->getCode());
         }
-        return new Block($block['blockID'], $block['block_header']);
+        $transactions = isset($block['transactions']) ? $block['transactions'] : [];
+        return new Block($block['blockID'], $block['block_header'], $transactions);
     }
 
     public function blockByNumber(int $blockID): Block
@@ -130,7 +131,8 @@ class TRX implements WalletInterface
         } catch (TronException $e) {
             throw new TransactionException($e->getMessage(), $e->getCode());
         }
-        return new Block($block['blockID'], $block['block_header'], $block['transactions']);
+        $transactions = isset($block['transactions']) ? $block['transactions'] : [];
+        return new Block($block['blockID'], $block['block_header'], $transactions);
     }
 
     public function transactionReceipt(string $txHash): Transaction
