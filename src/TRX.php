@@ -10,6 +10,7 @@ use Tron\Interfaces\WalletInterface;
 use Tron\Exceptions\TronErrorException;
 use Tron\Exceptions\TransactionException;
 use Tron\Support\Key as SupportKey;
+use InvalidArgumentException;
 
 class TRX implements WalletInterface
 {
@@ -48,8 +49,12 @@ class TRX implements WalletInterface
                 continue;
             }
 
-            $addressHex = Address::ADDRESS_PREFIX . SupportKey::publicKeyToAddress($pubKeyHex);
-            $addressBase58 = SupportKey::getBase58CheckAddress($addressHex);
+            try {
+                $addressHex = Address::ADDRESS_PREFIX . SupportKey::publicKeyToAddress($pubKeyHex);
+                $addressBase58 = SupportKey::getBase58CheckAddress($addressHex);
+            } catch (InvalidArgumentException $e) {
+                throw new TronException($e->getMessage());
+            }
             $address = new Address($addressBase58, $privateKeyHex, $addressHex);
             $validAddress = $this->validateAddress($address);
         } while (!$validAddress);
@@ -72,8 +77,12 @@ class TRX implements WalletInterface
 
     public function privateKeyToAddress(string $privateKeyHex): Address
     {
-        $addressHex = Address::ADDRESS_PREFIX . SupportKey::privateKeyToAddress($privateKeyHex);
-        $addressBase58 = SupportKey::getBase58CheckAddress($addressHex);
+        try {
+            $addressHex = Address::ADDRESS_PREFIX . SupportKey::privateKeyToAddress($privateKeyHex);
+            $addressBase58 = SupportKey::getBase58CheckAddress($addressHex);
+        } catch (InvalidArgumentException $e) {
+            throw new TronException($e->getMessage());
+        }
         $address = new Address($addressBase58, $privateKeyHex, $addressHex);
         $validAddress = $this->validateAddress($address);
         if (!$validAddress) {
@@ -131,6 +140,7 @@ class TRX implements WalletInterface
         } catch (TronException $e) {
             throw new TransactionException($e->getMessage(), $e->getCode());
         }
+
         $transactions = isset($block['transactions']) ? $block['transactions'] : [];
         return new Block($block['blockID'], $block['block_header'], $transactions);
     }

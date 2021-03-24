@@ -6,6 +6,7 @@ use IEXBase\TronAPI\Exception\TronException;
 use Tron\Exceptions\TransactionException;
 use Tron\Support\Formatter;
 use Tron\Support\Utils;
+use InvalidArgumentException;
 
 class TRC20 extends TRX
 {
@@ -36,7 +37,13 @@ class TRC20 extends TRX
         if (isset($body->result->code)) {
             throw new TronException(hex2bin($body->result->message));
         }
-        return Utils::toDisplayAmount($body->constant_result[0], $this->decimals);
+
+        try {
+            $balance = Utils::toDisplayAmount($body->constant_result[0], $this->decimals);
+        } catch (InvalidArgumentException $e) {
+            throw new TronException($e->getMessage());
+        }
+        return $balance;
     }
 
     public function transfer(Address $from, Address $to, float $amount): Transaction
@@ -45,7 +52,11 @@ class TRC20 extends TRX
         $this->tron->setPrivateKey($from->privateKey);
 
         $toFormat = Formatter::toAddressFormat($to->hexAddress);
-        $amount = Utils::toMinUnitByDecimals($amount, $this->decimals);
+        try {
+            $amount = Utils::toMinUnitByDecimals($amount, $this->decimals);
+        } catch (InvalidArgumentException $e) {
+            throw new TronException($e->getMessage());
+        }
         $numberFormat = Formatter::toIntegerFormat($amount);
 
         $body = $this->_api->post('/wallet/triggersmartcontract', [
