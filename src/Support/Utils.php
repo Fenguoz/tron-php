@@ -2,8 +2,6 @@
 
 namespace Tron\Support;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
 use InvalidArgumentException;
 use kornrunner\Keccak;
 use phpseclib\Math\BigInteger;
@@ -275,23 +273,11 @@ class Utils
      * @param int $decimals
      * @return string
      */
-    public static function toDisplayAmount($number, int $decimals)
+    public static function toDisplayAmount($amount, int $decimals)
     {
-        $bn = self::toBn($number);
-        $bnt = self::toBn(pow(10, $decimals));
-
-        return self::divideDisplay($bn->divide($bnt), $decimals);
-    }
-
-    public static function divideDisplay(array $divResult, int $decimals)
-    {
-        list($bnq, $bnr) = $divResult;
-        $ret = "$bnq->value";
-        if ($bnr->value > 0) {
-            $ret .= '.' . rtrim(sprintf("%0{$decimals}d", $bnr->value), '0');
-        }
-
-        return $ret;
+        $amount = hexdec($amount);
+        $amountStr = bcdiv((string)$amount, (string)bcpow(10, $decimals), $decimals);
+        return rtrim(rtrim($amountStr, '0'), '.');
     }
 
     public static function toMinUnitByDecimals($number, int $decimals)
@@ -327,21 +313,5 @@ class Utils
         }
 
         return $bn->multiply($bnt);
-    }
-
-    /**
-     * 发送http请求
-     * @param string $method
-     * @param string $url
-     * @param array $options
-     * @return mixed|StreamInterface
-     * @throws GuzzleException
-     */
-    public static function httpRequest(string $method, string $url, array $options = [])
-    {
-        $client = new Client(['timeout'  => 30]);
-        $res = $client->request($method, $url, $options)->getBody();
-        $res = json_decode((string)$res, true);
-        return $res;
     }
 }
