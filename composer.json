@@ -17,7 +17,7 @@
         }
     ],
     "require": {
-        "iexbase/tron-api": "^3.1",
+        "iexbase/tron-api": "^2.0 || ^3.0 || ^3.1",
         "ionux/phactor": "1.0.8",
         "kornrunner/keccak": "^1.0"
     },
