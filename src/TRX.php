@@ -53,7 +53,7 @@ class TRX implements WalletInterface
                 $addressHex = Address::ADDRESS_PREFIX . SupportKey::publicKeyToAddress($pubKeyHex);
                 $addressBase58 = SupportKey::getBase58CheckAddress($addressHex);
             } catch (InvalidArgumentException $e) {
-                throw new TronException($e->getMessage());
+                throw new TronErrorException($e->getMessage());
             }
             $address = new Address($addressBase58, $privateKeyHex, $addressHex);
             $validAddress = $this->validateAddress($address);
@@ -81,7 +81,7 @@ class TRX implements WalletInterface
             $addressHex = Address::ADDRESS_PREFIX . SupportKey::privateKeyToAddress($privateKeyHex);
             $addressBase58 = SupportKey::getBase58CheckAddress($addressHex);
         } catch (InvalidArgumentException $e) {
-            throw new TronException($e->getMessage());
+            throw new TronErrorException($e->getMessage());
         }
         $address = new Address($addressBase58, $privateKeyHex, $addressHex);
         $validAddress = $this->validateAddress($address);

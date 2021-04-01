@@ -73,7 +73,7 @@ class TRC20 extends TRX
         }
 
         try {
-            $tradeobj = $this->tron->signTransaction($body['transaction']);
+            $tradeobj = $this->tron->setIsOnlineSign(false)->signTransaction($body['transaction']);
             $response = $this->tron->sendRawTransaction($tradeobj);
         } catch (TronException $e) {
             throw new TransactionException($e->getMessage(), $e->getCode());
