@@ -4,6 +4,7 @@ namespace Tron;
 
 use IEXBase\TronAPI\Exception\TronException;
 use Tron\Exceptions\TransactionException;
+use Tron\Exceptions\TronErrorException;
 use Tron\Support\Formatter;
 use Tron\Support\Utils;
 use InvalidArgumentException;
@@ -35,13 +36,13 @@ class TRC20 extends TRX
         ]);
 
         if (isset($body->result->code)) {
-            throw new TronException(hex2bin($body->result->message));
+            throw new TronErrorException(hex2bin($body->result->message));
         }
 
         try {
             $balance = Utils::toDisplayAmount($body->constant_result[0], $this->decimals);
         } catch (InvalidArgumentException $e) {
-            throw new TronException($e->getMessage());
+            throw new TronErrorException($e->getMessage());
         }
         return $balance;
     }
@@ -55,7 +56,7 @@ class TRC20 extends TRX
         try {
             $amount = Utils::toMinUnitByDecimals($amount, $this->decimals);
         } catch (InvalidArgumentException $e) {
-            throw new TronException($e->getMessage());
+            throw new TronErrorException($e->getMessage());
         }
         $numberFormat = Formatter::toIntegerFormat($amount);
 
