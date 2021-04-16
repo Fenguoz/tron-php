@@ -40,7 +40,7 @@ class TRC20 extends TRX
         }
 
         try {
-            $balance = Utils::toDisplayAmount($body->constant_result[0], $this->decimals);
+            $balance = Utils::toDisplayAmount(hexdec($body->constant_result[0]), $this->decimals);
         } catch (InvalidArgumentException $e) {
             throw new TronErrorException($e->getMessage());
         }

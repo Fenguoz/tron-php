@@ -275,7 +275,6 @@ class Utils
      */
     public static function toDisplayAmount($amount, int $decimals)
     {
-        $amount = hexdec($amount);
         $amountStr = bcdiv((string)$amount, (string)bcpow(10, $decimals), $decimals);
         return rtrim(rtrim($amountStr, '0'), '.');
     }
