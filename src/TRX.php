@@ -155,7 +155,7 @@ class TRX implements WalletInterface
         return new Transaction(
             $detail['txID'],
             $detail['raw_data'],
-            $detail['ret'][0]['contractRet']
+            $detail['ret'][0]['contractRet'] ?? ''
         );
     }
 }
