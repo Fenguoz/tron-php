@@ -45,7 +45,7 @@ class Address
             return false;
         }
 
-        if (strpos($utf8, self::ADDRESS_PREFIX_BYTE) !== 0) {
+        if (strpos($utf8, chr(self::ADDRESS_PREFIX_BYTE)) !== 0) {
             return false;
         }
 
