@@ -39,7 +39,14 @@ class TRX implements WalletInterface
                 throw new TronErrorException('Could not generate valid key');
             }
 
-            $key = new Key();
+            $key = new Key([
+                'private_key_hex' => '',
+                'private_key_dec' => '',
+                'public_key' => '',
+                'public_key_compressed' => '',
+                'public_key_x' => '',
+                'public_key_y' => ''
+            ]);
             $keyPair = $key->GenerateKeypair();
             $privateKeyHex = $keyPair['private_key_hex'];
             $pubKeyHex = $keyPair['public_key'];
