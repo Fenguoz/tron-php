@@ -273,10 +273,23 @@ class Utils
      * @param int $decimals
      * @return string
      */
-    public static function toDisplayAmount($amount, int $decimals)
+    public static function toDisplayAmount($number, int $decimals)
     {
-        $amountStr = bcdiv((string)$amount, (string)bcpow(10, $decimals), $decimals);
-        return rtrim(rtrim($amountStr, '0'), '.');
+        $bn = self::toBn($number);
+        $bnt = self::toBn(pow(10, $decimals));
+
+        return self::divideDisplay($bn->divide($bnt), $decimals);
+    }
+
+    public static function divideDisplay(array $divResult, int $decimals)
+    {
+        list($bnq, $bnr) = $divResult;
+        $ret = "$bnq->value";
+        if ($bnr->value > 0) {
+            $ret .= '.' . rtrim(sprintf("%0{$decimals}d", $bnr->value), '0');
+        }
+
+        return $ret;
     }
 
     public static function toMinUnitByDecimals($number, int $decimals)
