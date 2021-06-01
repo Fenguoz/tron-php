@@ -275,6 +275,7 @@ class Utils
      */
     public static function toDisplayAmount($number, int $decimals)
     {
+        $number = number_format($number,0,'.','');//格式化
         $bn = self::toBn($number);
         $bnt = self::toBn(pow(10, $decimals));
 
