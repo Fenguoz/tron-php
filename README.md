@@ -33,7 +33,8 @@ composer require fenguoz/tron-php
 ``` php
 use GuzzleHttp\Client;
 
-$uri = 'https://api.shasta.trongrid.io';// shasta testnet
+$uri = 'https://api.trongrid.io';// mainnet
+// $uri = 'https://api.shasta.trongrid.io';// shasta testnet
 $api = new \Tron\Api(new Client(['base_uri' => $uri]));
 
 $trxWallet = new \Tron\TRX($api);

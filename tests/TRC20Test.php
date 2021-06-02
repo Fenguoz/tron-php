@@ -20,7 +20,8 @@ use Tron\TRC20;
 
 class TRC20Test extends TestCase
 {
-    const URI = 'https://api.shasta.trongrid.io'; // shasta testnet
+    const URI = 'https://api.trongrid.io'; // mainnet
+    // const URI = 'https://api.shasta.trongrid.io'; // shasta testnet
     const ADDRESS = 'TGytofNKuSReFmFxsgnNx19em3BAVBTpVB';
     const PRIVATE_KEY = '0xf1b4b7d86a3eff98f1bace9cb2665d0cad3a3f949bc74a7ffb2aaa968c07f521';
     const BLOCK_ID = 13402554;
