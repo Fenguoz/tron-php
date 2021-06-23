@@ -87,7 +87,7 @@ class TRC20 extends TRX
                 'PACKING'
             );
         } else {
-            throw new TransactionException('Transfer Fail');
+            throw new TransactionException(hex2bin($response['result']['message']));
         }
     }
 }
