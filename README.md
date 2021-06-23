@@ -61,3 +61,7 @@ $addressData = $trc20Wallet->generateAddress();
 | 扩展包名 | 描述 | 应用场景 |
 | :-----| :---- | :---- |
 | [iexbase/tron-api](https://github.com/iexbase/tron-api) | 波场官方文档推荐 PHP 扩展包 | 波场基础Api |
+
+## 🌟🌟
+
+[![Stargazers over time](https://starchart.cc/Fenguoz/tron-php.svg)](https://starchart.cc/Fenguoz/tron-php)
