@@ -46,7 +46,7 @@ $config = [
     'contract_address' => 'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t',// USDT TRC20
     'decimals' => 6,
 ];
-$trc20Wallet = new \Tron\TRC20($api, $this->config);
+$trc20Wallet = new \Tron\TRC20($api, $config);
 $addressData = $trc20Wallet->generateAddress();
 ```
 
