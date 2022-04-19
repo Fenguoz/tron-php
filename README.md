@@ -53,8 +53,7 @@ $addressData = $trc20Wallet->generateAddress();
 ## 计划
 
 - 支持 TRC10
-- 测试用例
-- ...
+- 智能合约
 
 ## 扩展包
 
@@ -65,3 +64,9 @@ $addressData = $trc20Wallet->generateAddress();
 ## 🌟🌟
 
 [![Stargazers over time](https://starchart.cc/Fenguoz/tron-php.svg)](https://starchart.cc/Fenguoz/tron-php)
+
+## 合作
+
+联系方式
+- WX：zgf243944672
+- QQ：243944672
