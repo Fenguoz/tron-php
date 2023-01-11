@@ -2,6 +2,13 @@
 
 <h1 align="center">TRON-PHP</h1>
 
+<p align="center">
+  <a href="https://github.com/Fenguoz/tron-php/releases"><img src="https://poser.pugx.org/Fenguoz/tron-php/v/stable" alt="Stable Version"></a>
+  <a href="https://www.php.net"><img src="https://img.shields.io/badge/php-%3E=7.2-brightgreen.svg?maxAge=2592000" alt="Php Version"></a>
+  <a href="https://github.com/hyperf/hyperf/blob/master/LICENSE"><img src="https://img.shields.io/github/license/hyperf/hyperf.svg?maxAge=2592000" alt="Hyperf License"></a>
+  <a href="https://packagist.org/packages/Fenguoz/tron-php"><img src="https://poser.pugx.org/Fenguoz/tron-php/downloads" alt="Total Downloads"></a>
+</p>
+
 ## 概述
 
 TRON-PHP 目前支持波场的 TRX 和 TRC20 中常用生成地址，发起转账，离线签名等功能。
