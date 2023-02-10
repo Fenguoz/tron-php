@@ -5,7 +5,7 @@
 <p align="center">
   <a href="https://github.com/Fenguoz/tron-php/releases"><img src="https://poser.pugx.org/Fenguoz/tron-php/v/stable" alt="Stable Version"></a>
   <a href="https://www.php.net"><img src="https://img.shields.io/badge/php-%3E=7.2-brightgreen.svg?maxAge=2592000" alt="Php Version"></a>
-  <a href="https://github.com/hyperf/hyperf/blob/master/LICENSE"><img src="https://img.shields.io/github/license/hyperf/hyperf.svg?maxAge=2592000" alt="Hyperf License"></a>
+  <a href="https://github.com/Fenguoz/tron-php/blob/master/LICENSE"><img src="https://img.shields.io/github/license/fenguoz/tron-php.svg?maxAge=2592000" alt="tron-php License"></a>
   <a href="https://packagist.org/packages/Fenguoz/tron-php"><img src="https://poser.pugx.org/Fenguoz/tron-php/downloads" alt="Total Downloads"></a>
 </p>
 
@@ -33,8 +33,14 @@ TRON-PHP 目前支持波场的 TRX 和 TRC20 中常用生成地址，发起转�
 
 ### 安装
 
+PHP8
 ``` php
 composer require fenguoz/tron-php
+```
+
+or PHP7
+``` php
+composer require fenguoz/tron-php ~1.3
 ```
 
 ### 接口调用
@@ -68,7 +74,7 @@ $addressData = $trc20Wallet->generateAddress();
 
 | 扩展包名 | 描述 | 应用场景 |
 | :-----| :---- | :---- |
-| [iexbase/tron-api](https://github.com/iexbase/tron-api) | 波场官方文档推荐 PHP 扩展包 | 波场基础Api |
+| [fenguoz/tron-api](https://github.com/fenguoz/tron-api) | 波场官方文档推荐 PHP 扩展包 | 波场基础Api |
 
 ## 🌟🌟
 
