@@ -14,6 +14,10 @@ use InvalidArgumentException;
 
 class TRX implements WalletInterface
 {
+    protected $_api;
+
+    protected $tron;
+    
     public function __construct(Api $_api, array $config = [])
     {
         $this->_api = $_api;
