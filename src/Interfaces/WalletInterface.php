@@ -23,4 +23,6 @@ interface WalletInterface
     public function blockByNumber(int $blockID): Block;
 
     public function transactionReceipt(string $txHash);
+
+    public function walletTransactions(Address $address, int $limit = null): ?array;
 }

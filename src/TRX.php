@@ -17,7 +17,7 @@ class TRX implements WalletInterface
     protected $_api;
 
     protected $tron;
-    
+
     public function __construct(Api $_api, array $config = [])
     {
         $this->_api = $_api;
@@ -138,7 +138,7 @@ class TRX implements WalletInterface
         try {
             $block = $this->tron->getCurrentBlock();
         } catch (TronException $e) {
-            throw new TransactionException($e->getMessage(), $e->getCode());
+            throw new TronErrorException($e->getMessage(), $e->getCode());
         }
         $transactions = isset($block['transactions']) ? $block['transactions'] : [];
         return new Block($block['blockID'], $block['block_header'], $transactions);
@@ -149,7 +149,7 @@ class TRX implements WalletInterface
         try {
             $block = $this->tron->getBlockByNumber($blockID);
         } catch (TronException $e) {
-            throw new TransactionException($e->getMessage(), $e->getCode());
+            throw new TronErrorException($e->getMessage(), $e->getCode());
         }
 
         $transactions = isset($block['transactions']) ? $block['transactions'] : [];
@@ -168,5 +168,16 @@ class TRX implements WalletInterface
             $detail['raw_data'],
             $detail['ret'][0]['contractRet'] ?? ''
         );
+    }
+
+    public function walletTransactions(Address $address, int $limit = null): ?array
+    {
+        try {
+            $ret = $this->tron->getTransactions($address->address, $limit);
+        } catch (TronException $e) {
+            throw new TronErrorException($e->getMessage(), $e->getCode());
+        }
+
+        return $ret['data'];
     }
 }

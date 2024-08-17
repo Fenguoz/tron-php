@@ -23,7 +23,7 @@ class Address
 
         $this->privateKey = $privateKey;
         $this->address = $address;
-        $this->hexAddress = $hexAddress;
+        $this->hexAddress = $hexAddress ?: Utils::address2HexString($address);
     }
 
     /**

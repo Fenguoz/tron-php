@@ -40,6 +40,25 @@ class Api
     }
 
     /**
+     * Abstracts some common functionality just to preserve usage like post
+     *
+     * @throws TronErrorException
+     */
+    public function get(string $endpoint, array $data = [], bool $returnAssoc = false)
+    {
+        if (sizeof($data)) {
+            $data = ['query' => $data];
+        }
+
+        $stream = (string)$this->getClient()->get($endpoint, $data)->getBody();
+        $body = json_decode($stream, $returnAssoc);
+
+        $this->checkForErrorResponse($returnAssoc, $body);
+
+        return $body;
+    }
+
+    /**
      * Check if the response has an error and throw it.
      *
      * @param bool $returnAssoc

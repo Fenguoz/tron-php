@@ -12,19 +12,27 @@ use InvalidArgumentException;
 class TRC20 extends TRX
 {
     protected $contractAddress;
-
     protected $decimals;
+    protected $trc20Contract;
 
     public function __construct(Api $_api, array $config)
     {
         parent::__construct($_api, $config);
 
-        $this->contractAddress = new Address(
-            $config['contract_address'],
-            '',
-            $this->tron->address2HexString($config['contract_address'])
-        );
+        if (!isset($config['contract_address']) || empty($config['contract_address'])) {
+            throw new TronErrorException('Missing contract address');
+        }
+        if (!isset($config['decimals']) || empty($config['decimals'])) {
+            throw new TronErrorException('Missing decimals');
+        }
+
+        $this->contractAddress = new Address($config['contract_address']);
         $this->decimals = $config['decimals'];
+        $this->trc20Contract = new \IEXBase\TronAPI\TRC20Contract(
+            $this->tron,
+            $config['contract_address'],
+            (isset($config['abi']) ? $config['abi'] : null)
+        );
     }
 
     public function balance(Address $address)
@@ -91,5 +99,16 @@ class TRC20 extends TRX
         } else {
             throw new TransactionException(hex2bin($response['result']['message']));
         }
+    }
+
+    public function walletTransactions(Address $address, int $limit = null): ?array
+    {
+        try {
+            $ret = $this->trc20Contract->getTransactions($address->address, $limit);
+        } catch (TronException $e) {
+            throw new TronErrorException($e->getMessage(), $e->getCode());
+        }
+
+        return $ret['data'];
     }
 }
